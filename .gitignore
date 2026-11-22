@@ -46,3 +46,6 @@ next-env.d.ts
 
 # local-only cover copies for previewing imported articles
 /public/_dev-covers/
+
+# caches created when tools run from subfolders
+node_modules/
