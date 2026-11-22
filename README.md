@@ -32,7 +32,7 @@ No Postgres at hand? A throwaway one in WASM works:
 
 ## Deploy (Vercel + Supabase)
 
-1. Import the repository in Vercel with **Root Directory = `site`**.
+1. Import `vellames/chinsandchokes_site` in Vercel (Root Directory: the repo root, the default).
 2. Storage → connect **Supabase**. It sets `POSTGRES_PRISMA_URL`, `POSTGRES_URL_NON_POOLING`, etc.
 3. Set `NEXT_PUBLIC_SITE_URL` (the public domain) and optionally `REVALIDATE_SECRET`.
 4. Deploy. `vercel-build` runs `prisma migrate deploy` (direct connection) and then `next build`.
