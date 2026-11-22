@@ -1,0 +1,166 @@
+@import "tailwindcss";
+
+/* Chins & Chokes visual identity (workspace/brand/visual.md + theme.json):
+   charcoal and graphite build the frame, bone carries the text, acid lime marks the key detail. */
+@theme {
+  --color-charcoal: #121312;
+  --color-graphite: #252824;
+  --color-graphite-2: #1b1d1a;
+  --color-line: #333630;
+  --color-bone: #f4f1e8;
+  --color-muted: #b5b8ae;
+  --color-lime: #e7fc38;
+
+  --font-sans: var(--font-inter), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-display: var(--font-barlow), "Arial Narrow", sans-serif;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  background: var(--color-charcoal);
+}
+
+body {
+  background: var(--color-charcoal);
+  color: var(--color-bone);
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background: var(--color-lime);
+  color: var(--color-charcoal);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-lime);
+  outline-offset: 2px;
+}
+
+/* Headline style from the brand board: Barlow Condensed ExtraBold Italic, uppercase, tight. */
+@utility headline {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-style: italic;
+  text-transform: uppercase;
+  line-height: 0.95;
+  letter-spacing: -0.005em;
+}
+
+/* Spaced-out label ("— BREAKDOWN", "FROM STRIKING TO GRAPPLING"). */
+@utility kicker {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+
+/* Black-and-white documentary photography. */
+@utility photo-bw {
+  filter: grayscale(1) contrast(1.08);
+}
+
+/* Article body typography. */
+@utility prose-cc {
+  font-size: 1.125rem;
+  line-height: 1.75;
+  color: var(--color-bone);
+
+  & > * + * {
+    margin-top: 1.25em;
+  }
+  & h2 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-style: italic;
+    text-transform: uppercase;
+    font-size: 2rem;
+    line-height: 1;
+    margin-top: 2em;
+  }
+  & h3 {
+    font-weight: 700;
+    font-size: 1.25rem;
+    margin-top: 1.75em;
+  }
+  & a {
+    color: var(--color-lime);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  & strong {
+    color: #fff;
+  }
+  & ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  & ul > li {
+    position: relative;
+    padding-left: 1.25em;
+  }
+  & ul > li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.8em;
+    width: 0.6em;
+    height: 2px;
+    background: var(--color-lime);
+  }
+  & ol {
+    list-style: decimal;
+    padding-left: 1.25em;
+  }
+  & li + li {
+    margin-top: 0.4em;
+  }
+  & blockquote {
+    border-left: 3px solid var(--color-lime);
+    padding-left: 1.25em;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-style: italic;
+    font-size: 1.75rem;
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+  & figure img {
+    width: 100%;
+    height: auto;
+  }
+  & figcaption {
+    margin-top: 0.5em;
+    font-size: 0.8125rem;
+    color: var(--color-muted);
+  }
+  & table {
+    width: 100%;
+    font-size: 0.95rem;
+    border-collapse: collapse;
+  }
+  & th,
+  & td {
+    border-bottom: 1px solid var(--color-line);
+    padding: 0.5em 0.75em 0.5em 0;
+    text-align: left;
+  }
+  & th {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-muted);
+  }
+  & hr {
+    border: 0;
+    border-top: 1px solid var(--color-line);
+  }
+  & code {
+    background: var(--color-graphite);
+    padding: 0.1em 0.35em;
+    font-size: 0.9em;
+  }
+}

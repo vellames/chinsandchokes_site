@@ -1,0 +1,102 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "esm"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Conventions (kept from the finance project):
+// - tables (models) in PascalCase, columns in camelCase; never rename with @map / @@map
+// - every id and reference is a UUID; the database generates it (rows are inserted by hand for now)
+// - every table has createdAt / updatedAt; a trigger keeps updatedAt current on manual UPDATEs
+// - every DateTime is an instant (@db.Timestamptz(3), stored in UTC)
+// - RLS is enabled with no policies: Supabase's public API (anon/authenticated) sees nothing;
+//   the app connects as the database owner and is not affected.
+
+enum ArticleStatus {
+  draft
+  published
+  archived
+}
+
+/// A section of the portal (News, Fight IQ, BJJ 101...). Ordered in the navigation by position.
+model Category {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  slug        String    @unique
+  name        String
+  description String?
+  /// Order in the navigation, 0 first. Hidden from the navigation when null.
+  position    Int?
+  articles    Article[]
+  createdAt   DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime  @default(now()) @updatedAt @db.Timestamptz(3)
+}
+
+model Author {
+  id        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  slug      String    @unique
+  name      String
+  bio       String?
+  avatarUrl String?
+  articles  Article[]
+  createdAt DateTime  @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime  @default(now()) @updatedAt @db.Timestamptz(3)
+}
+
+model Article {
+  id               String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  /// URL slug: lowercase letters, digits and single hyphens (checked by a constraint).
+  slug             String        @unique
+  title            String
+  /// The one-line promise under the headline (also the default meta description).
+  dek              String
+  /// Article body in Markdown (GFM). Raw HTML is not rendered.
+  body             String
+  coverImageUrl    String?
+  coverImageAlt    String?
+  /// Photo credit / license line shown under the cover, e.g. "Photo: Jane Doe / CC BY-SA 4.0".
+  coverImageCredit String?
+  status           ArticleStatus @default(draft)
+  /// Visible on the site only when status = published and publishedAt <= now().
+  publishedAt      DateTime?     @db.Timestamptz(3)
+  /// Pins the article to the lead slot of the home page (the latest featured one wins).
+  featured         Boolean       @default(false)
+  /// Sources behind the reporting: JSON array of { "label": string, "url": string }.
+  sources          Json          @default("[]")
+  seoTitle         String?
+  seoDescription   String?
+  categoryId       String        @db.Uuid
+  category         Category      @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  authorId         String?       @db.Uuid
+  author           Author?       @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  tags             ArticleTag[]
+  createdAt        DateTime      @default(now()) @db.Timestamptz(3)
+  updatedAt        DateTime      @default(now()) @updatedAt @db.Timestamptz(3)
+
+  @@index([status, publishedAt(sort: Desc)])
+  @@index([categoryId, status, publishedAt(sort: Desc)])
+}
+
+model Tag {
+  id        String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  slug      String       @unique
+  name      String
+  articles  ArticleTag[]
+  createdAt DateTime     @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime     @default(now()) @updatedAt @db.Timestamptz(3)
+}
+
+model ArticleTag {
+  articleId String   @db.Uuid
+  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  tagId     String   @db.Uuid
+  tag       Tag      @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @default(now()) @updatedAt @db.Timestamptz(3)
+
+  @@id([articleId, tagId])
+  @@index([tagId])
+}
