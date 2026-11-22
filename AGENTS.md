@@ -70,7 +70,7 @@ VALUES (
   E'Markdown body.\n\n## Subheading\n\nText.',
   'published', now(),
   (SELECT id FROM "Category" WHERE slug = 'news'),
-  'https://<project>.supabase.co/storage/v1/object/public/covers/photo.jpg',
+  'https://<store>.public.blob.vercel-storage.com/covers/photo.jpg',
   'What the photo shows',
   'Photo: Name / License',
   '[{"label": "UFC Stats", "url": "https://ufcstats.com"}]'
@@ -80,7 +80,9 @@ VALUES (
 - Body is Markdown (GFM tables, lists, quotes). Raw HTML is ignored. A Markdown `#` heading becomes
   an `h2` (the page has its own `h1`).
 - Covers: licensed or own images only (see `../workspace/brand/do-dont.md`); always fill
-  `coverImageAlt` and `coverImageCredit`. Hosts in `src/lib/images.ts` (plus `IMAGE_HOSTS`) are
+  `coverImageAlt` and `coverImageCredit`. Upload them to the public Vercel Blob store
+  `storage-chinsandchokes-public` (Vercel → Storage, e.g. a `covers/` folder) and paste the file URL
+  into `coverImageUrl`. Hosts in `src/lib/images.ts` (plus `IMAGE_HOSTS`) are
   optimized by next/image; other hosts still work as plain images.
 - Categories with a `position` appear in the navigation, ordered by it.
 - Tags: insert into `"Tag"`, then link with `"ArticleTag" ("articleId", "tagId")`.

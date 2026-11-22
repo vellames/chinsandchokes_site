@@ -3,7 +3,7 @@
  * Others are shown as plain <img> so a cover typed by hand from any site never breaks a page.
  * Add hosts with IMAGE_HOSTS (comma-separated) — wildcards like "*.example.com" work.
  */
-export const DEFAULT_IMAGE_HOSTS = ["*.supabase.co", "upload.wikimedia.org", "images.unsplash.com"];
+export const DEFAULT_IMAGE_HOSTS = ["*.public.blob.vercel-storage.com", "*.supabase.co", "upload.wikimedia.org", "images.unsplash.com"];
 
 export function imageHosts(): string[] {
   const extra = (process.env["IMAGE_HOSTS"] ?? "")
