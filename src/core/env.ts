@@ -12,6 +12,8 @@ const schema = z.object({
   POSTGRES_URL: z.url().optional(),
   /** PEM of the database's CA (Supabase: "Download certificate"). Without it TLS is encrypted but not verified. */
   DATABASE_CA_CERT: z.string().min(1).optional(),
+  /** Connections per server instance (default 3; Supabase's pooler does the fan-in). */
+  DATABASE_POOL_MAX: z.coerce.number().int().min(1).max(20).optional(),
   /** Shared secret for POST /api/revalidate. The route is disabled when unset. */
   REVALIDATE_SECRET: z.string().min(16).optional(),
 });

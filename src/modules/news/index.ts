@@ -72,6 +72,6 @@ export async function getArticleIndex() {
   return news().getArticleIndex();
 }
 
-export type { Article, ArticleSummary, Category, CategoryRef, Source, TagRef } from "./domain/article";
+export type { Article, ArticleSummary, Category, CategoryRef, Source, TagRef, Video } from "./domain/article";
 export type { Page } from "./domain/pagination";
 export { parsePageNumber } from "./domain/pagination";

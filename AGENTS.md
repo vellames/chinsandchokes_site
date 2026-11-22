@@ -77,6 +77,9 @@ VALUES (
 );
 ```
 
+- Video: set `youtubeVideoId` (the 11-character id) and `videoOrientation` (`portrait` for a
+  Short, `landscape` otherwise); the player replaces the cover at the top of the article.
+- Sources: `[{"label": "...", "url": "https://..."}]`; `url` may be omitted for offline sources.
 - Body is Markdown (GFM tables, lists, quotes). Raw HTML is ignored. A Markdown `#` heading becomes
   an `h2` (the page has its own `h1`).
 - Covers: licensed or own images only (see `../workspace/brand/do-dont.md`); always fill

@@ -22,6 +22,11 @@ enum ArticleStatus {
   archived
 }
 
+enum VideoOrientation {
+  landscape
+  portrait
+}
+
 /// A section of the portal (News, Fight IQ, BJJ 101...). Ordered in the navigation by position.
 model Category {
   id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
@@ -64,7 +69,11 @@ model Article {
   publishedAt      DateTime?     @db.Timestamptz(3)
   /// Pins the article to the lead slot of the home page (the latest featured one wins).
   featured         Boolean       @default(false)
-  /// Sources behind the reporting: JSON array of { "label": string, "url": string }.
+  /// YouTube video shown at the top of the article instead of the cover (11-character id).
+  youtubeVideoId   String?
+  /// portrait = a Short (9:16), landscape = a regular video (16:9).
+  videoOrientation VideoOrientation @default(landscape)
+  /// Sources behind the reporting: JSON array of { "label": string, "url"?: string }.
   sources          Json          @default("[]")
   seoTitle         String?
   seoDescription   String?

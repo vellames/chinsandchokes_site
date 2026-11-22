@@ -11,7 +11,7 @@ export function db(): PrismaClient {
   if (!globalForPrisma.prisma) {
     const env = serverEnv();
     globalForPrisma.prisma = new PrismaClient({
-      adapter: new PrismaPg(poolConfig(env.databaseUrl, env.DATABASE_CA_CERT)),
+      adapter: new PrismaPg(poolConfig(env.databaseUrl, env.DATABASE_CA_CERT, env.DATABASE_POOL_MAX)),
     });
   }
   return globalForPrisma.prisma;

@@ -17,6 +17,8 @@ npm run dev
 No Postgres at hand? A throwaway one in WASM works:
 `npx @electric-sql/pglite-socket --db=./pgdata --port=54329 --max-connections=10`
 (DATABASE_URL `postgresql://postgres:postgres@127.0.0.1:54329/postgres?sslmode=disable`).
+PGlite runs one backend for every connection, so set `DATABASE_POOL_MAX=1` and expect
+`next build` to need `experimental.cpus: 1` against it; Supabase has no such limit.
 
 ## Scripts
 

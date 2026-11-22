@@ -75,6 +75,7 @@ export function anArticle(overrides: Partial<StoredArticle> = {}): StoredArticle
     dek: "Dek",
     body: "Body",
     cover: null,
+    video: null,
     category: { slug: "news", name: "News" },
     authorName: null,
     author: null,

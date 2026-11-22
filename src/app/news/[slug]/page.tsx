@@ -10,6 +10,7 @@ import { ArticleBody } from "@/components/organisms/article-body";
 import { ArticleGrid } from "@/components/organisms/article-grid";
 import { ShareBar } from "@/components/organisms/share-bar";
 import { SourcesBox } from "@/components/organisms/sources-box";
+import { VideoEmbed } from "@/components/organisms/video-embed";
 import { type Article, getArticle, getFeed } from "@/modules/news";
 import { formatDateTime } from "@/lib/dates";
 import { paths, site, siteUrl } from "@/lib/site";
@@ -73,7 +74,11 @@ async function ArticleView({ params }: Pick<Props, "params">) {
           </div>
         </header>
 
-        {article.cover && (
+        {article.video ? (
+          <div className="mx-auto mt-10 max-w-6xl sm:px-6">
+            <VideoEmbed video={article.video} title={article.title} />
+          </div>
+        ) : article.cover && (
           <figure className="mx-auto mt-10 max-w-6xl sm:px-6">
             <div className="relative aspect-[16/9] overflow-hidden bg-graphite">
               <CoverImage src={article.cover.url} alt={article.cover.alt} sizes="(min-width: 1152px) 1104px, 100vw" priority />
@@ -154,6 +159,16 @@ function jsonLd(article: Article, url: string): string {
     articleSection: article.category.name,
     keywords: article.tags.map((t) => t.name).join(", ") || undefined,
     image: article.cover ? [article.cover.url] : undefined,
+    video: article.video
+      ? {
+          "@type": "VideoObject",
+          name: article.title,
+          description: article.dek,
+          thumbnailUrl: article.cover?.url ?? `https://i.ytimg.com/vi/${article.video.youtubeId}/hqdefault.jpg`,
+          uploadDate: article.publishedAt.toISOString(),
+          embedUrl: `https://www.youtube-nocookie.com/embed/${article.video.youtubeId}`,
+        }
+      : undefined,
     author: article.author ? { "@type": "Person", name: article.author.name } : { "@type": "Organization", name: site.name },
     publisher: {
       "@type": "Organization",

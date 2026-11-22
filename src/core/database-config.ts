@@ -7,7 +7,7 @@ import type { PoolConfig } from "pg";
  * certificates are signed by its own CA, so that fails unless the CA is provided. We keep TLS on and
  * verify only when the CA is configured. Pooler-only params that `pg` does not understand are removed.
  */
-export function poolConfig(databaseUrl: string, caCert?: string): PoolConfig {
+export function poolConfig(databaseUrl: string, caCert?: string, max = 3): PoolConfig {
   const url = new URL(databaseUrl);
   const sslmode = url.searchParams.get("sslmode");
   for (const param of ["sslmode", "pgbouncer", "supa", "connection_limit"]) url.searchParams.delete(param);
@@ -19,7 +19,7 @@ export function poolConfig(databaseUrl: string, caCert?: string): PoolConfig {
     connectionString: url.toString(),
     ...(ssl ? { ssl } : {}),
     // Serverless: few connections per instance; Supabase's pooler does the fan-in.
-    max: 3,
+    max,
     idleTimeoutMillis: 10_000,
   };
 }

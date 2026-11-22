@@ -3,7 +3,7 @@ import type { Source } from "../domain/article";
 
 const sourceSchema = z.object({
   label: z.string().trim().min(1).max(300),
-  url: z.url({ protocol: /^https?$/ }),
+  url: z.url({ protocol: /^https?$/ }).nullish(),
 });
 
 /**
@@ -14,6 +14,6 @@ export function parseSources(value: unknown): Source[] {
   if (!Array.isArray(value)) return [];
   return value.flatMap((entry) => {
     const parsed = sourceSchema.safeParse(entry);
-    return parsed.success ? [parsed.data] : [];
+    return parsed.success ? [{ label: parsed.data.label, url: parsed.data.url ?? null }] : [];
   });
 }

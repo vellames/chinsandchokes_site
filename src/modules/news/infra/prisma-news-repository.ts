@@ -13,6 +13,8 @@ const summarySelect = {
   coverImageUrl: true,
   coverImageAlt: true,
   coverImageCredit: true,
+  youtubeVideoId: true,
+  videoOrientation: true,
   publishedAt: true,
   category: { select: { slug: true, name: true } },
   author: { select: { name: true } },
@@ -136,6 +138,7 @@ function toSummary(row: SummaryRow): ArticleSummary {
     cover: row.coverImageUrl
       ? { url: row.coverImageUrl, alt: row.coverImageAlt ?? "", credit: row.coverImageCredit }
       : null,
+    video: row.youtubeVideoId ? { youtubeId: row.youtubeVideoId, orientation: row.videoOrientation } : null,
     category: row.category,
     authorName: row.author?.name ?? null,
     publishedAt: row.publishedAt,

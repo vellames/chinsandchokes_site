@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { ArticleSummary } from "@/modules/news";
 import { paths } from "@/lib/site";
-import { CoverImage, CoverPlaceholder } from "../atoms/cover-image";
+import { CoverImage, CoverPlaceholder, VideoBadge } from "../atoms/cover-image";
 import { Kicker } from "../atoms/kicker";
 import { ArticleMeta } from "./article-meta";
 
@@ -47,6 +47,7 @@ export function ArticleCard({ article, variant = "grid" }: { article: ArticleSum
         ) : (
           <CoverPlaceholder />
         )}
+        {article.video && <VideoBadge />}
         <span aria-hidden className="absolute bottom-0 left-0 h-1 w-0 bg-lime transition-all duration-300 group-hover:w-full" />
       </div>
       <div className="mt-4">

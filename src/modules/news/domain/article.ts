@@ -1,7 +1,14 @@
 /** A source behind the reporting, shown under the article ("How we know"). */
 export interface Source {
   readonly label: string;
-  readonly url: string;
+  /** Missing for sources that are not online (a book, a broadcast). */
+  readonly url: string | null;
+}
+
+export interface Video {
+  readonly youtubeId: string;
+  /** portrait = a YouTube Short (9:16). */
+  readonly orientation: "landscape" | "portrait";
 }
 
 export interface CategoryRef {
@@ -38,6 +45,7 @@ export interface ArticleSummary {
   readonly title: string;
   readonly dek: string;
   readonly cover: CoverImage | null;
+  readonly video: Video | null;
   readonly category: CategoryRef;
   readonly authorName: string | null;
   readonly publishedAt: Date;

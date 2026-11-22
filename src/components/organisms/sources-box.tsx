@@ -8,10 +8,19 @@ export function SourcesBox({ sources }: { sources: readonly Source[] }) {
       <p className="kicker text-lime">How we know</p>
       <ul className="mt-3 space-y-2 text-sm">
         {sources.map((s) => (
-          <li key={s.url}>
-            <a href={s.url} target="_blank" rel="noopener noreferrer nofollow" className="text-bone underline decoration-line underline-offset-4 hover:text-lime hover:decoration-lime">
-              {s.label}
-            </a>
+          <li key={`${s.label}-${s.url ?? ""}`}>
+            {s.url ? (
+              <a
+                href={s.url}
+                target="_blank"
+                rel="noopener noreferrer nofollow"
+                className="text-bone underline decoration-line underline-offset-4 hover:text-lime hover:decoration-lime"
+              >
+                {s.label}
+              </a>
+            ) : (
+              <span className="text-muted">{s.label}</span>
+            )}
           </li>
         ))}
       </ul>
